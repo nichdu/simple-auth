@@ -3,7 +3,7 @@
  * This file is part of the SimpleAuth package.
  *
  * (c) Tjark Saul <php@tjarksaul.de>
- *
+ *§
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -116,7 +116,8 @@ class Authenticator {
         }
 
         // checking if the given hash is correct
-        if (\hash_equals($expected, $hash)) {
+        if (!function_exists('hash_equals')) { require __DIR__ . '/functions.php'; } // PHP < 5.6 compatibility
+        if (hash_equals($expected, $hash)) {
             // wir müssen das Datum checken
             $diff = abs($date->getTimestamp() - (new \DateTime)->getTimestamp());
             if ($diff <= $this->timeDiff) {
