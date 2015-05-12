@@ -31,4 +31,7 @@ To create your own authentication hash, you must do the following:
 5. Run the hash function you set the set number of times (e.g. in default settings: run sha-256 2^10 times.
 6. The result is the authentication hash.
 
+## Todos
+- allow preference setting as static methods to change for all instances
+
 [php-c-format]: https://php.net/manual/en/function.date.php "PHP: date - Manual"
