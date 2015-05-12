@@ -37,7 +37,7 @@ class Authenticator {
 
     /**
      * Creates an authenticator using the given secret
-     * @param $secret string
+     * @param string $secret
      */
     public function __construct($secret) {
         if (!is_string($secret)) {
@@ -49,7 +49,7 @@ class Authenticator {
 
     /**
      * Sets the hash algorithm for creation and comparison
-     * @param $hashAlgorithm string a hash algorithm from hash_algos()
+     * @param string $hashAlgorithm a hash algorithm from hash_algos()
      */
     public function setHashAlgorithm($hashAlgorithm) {
         if (!is_string($hashAlgorithm)) {
@@ -63,7 +63,7 @@ class Authenticator {
 
     /**
      * Sets the maximum time difference a request may have to be authenticated
-     * @param $timeDifference int maximum time difference in seconds
+     * @param int $timeDifference maximum time difference in seconds
      */
     public function setTimeDifference($timeDifference) {
         if (!is_integer($timeDifference)) {
@@ -77,7 +77,7 @@ class Authenticator {
 
     /**
      * Sets the number of hash rounds to run through. Higher numbers are more secure.
-     * @param $hashRounds int the number of hash rounds log 2
+     * @param int $hashRounds the number of hash rounds log 2
      */
     public function setHashRounds($hashRounds) {
         if (!is_integer($hashRounds)) {
@@ -92,8 +92,8 @@ class Authenticator {
     /**
      * tries to authenticate by the given random and hash from the given DateTime
      * @param \DateTime $date date and time from the request
-     * @param $random string random from the request
-     * @param $hash string given hash
+     * @param string $random random from the request
+     * @param string $hash given hash
      * @return bool true if the authentication was successful, false otherwise
      */
     public function authenticate(\DateTime $date, $random, $hash) {
@@ -129,7 +129,7 @@ class Authenticator {
 
     /**
      * creates an authentication from the given random and DateTime
-     * @param $random string a random string
+     * @param string $random a random string
      * @param \DateTime $date the date and time to be used, defaults to now
      * @return string the hash to send
      */
