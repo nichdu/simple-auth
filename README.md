@@ -35,6 +35,7 @@ Please note that all `default` methods will only influence future instances of `
 
 ## How does it work?
 To create your own authentication hash, you must do the following:
+
 1. Use the same secret as the server
 2. Generate a random string
 3. Get the current date and time and format as string formatted according to PHP's [c-format][php-c-format] (ISO 8601)
