@@ -1,4 +1,6 @@
 # SimpleAuth - a simple PHP authentication library
+[![Build Status](https://travis-ci.org/nichdu/simple-auth.svg?branch=master)](https://travis-ci.org/nichdu/simple-auth)
+
 This is a simple PHP authentication library if you don't want to mess around with user names and passwords.
 
 ## Usage
