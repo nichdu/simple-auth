@@ -41,6 +41,6 @@ To create your own authentication hash, you must do the following:
 6. The result is the authentication hash.
 
 ## Todos
-- allow preference setting as static methods to change for all instances
+- none, currently
 
 [php-c-format]: https://php.net/manual/en/function.date.php "PHP: date - Manual"
