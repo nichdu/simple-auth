@@ -21,19 +21,98 @@ class Authenticator {
     /**
      * @var string
      */
+    private static $defaultHashAlgorithm   = 'sha256';
+    /**
+     * @var int
+     */
+    private static $defaultTimeDiff        = 60;
+    /**
+     * @var int
+     */
+    private static $defaultHashRounds      = 10;
+
+    /**
+     * Gets the default hash algorithm for creation and comparison of authentication hashes.
+     * @return string
+     */
+    public static function getDefaultHashAlgorithm() {
+        return self::$defaultHashAlgorithm;
+    }
+
+    /**
+     * Sets the default hash algorithm for creation and comparison of authentication hashes.
+     * @param string $algorithm a hash algorithm from hash_algos()
+     */
+    public static function setDefaultHashAlgorithm($algorithm) {
+        if (!is_string($algorithm)) {
+            throw new InvalidArgumentException('$hashAlgorithm must be a string');
+        }
+        if (!in_array($algorithm, \hash_algos())) {
+            throw new InvalidArgumentException('$hashAlgorithm must be a valid hash algorithm from hash_algos()');
+        }
+        self::$defaultHashAlgorithm = $algorithm;
+    }
+
+    /**
+     * Returns the default time difference within an authentication hash is valid.
+     * @return int
+     */
+    public static function getDefaultTimeDifference() {
+        return self::$defaultTimeDiff;
+    }
+
+    /**
+     * Sets the default maximum time difference a request may have to be authenticated
+     * @param int $timeDiff maximum time difference in seconds
+     */
+    public static function setDefaultTimeDifference($timeDiff) {
+        if (!is_integer($timeDiff)) {
+            throw new InvalidArgumentException('$timeDifference must be an integer');
+        }
+        if ($timeDiff < 0) {
+            throw new InvalidArgumentException('$timeDifference must be a positive integer (including 0)');
+        }
+        self::$defaultTimeDiff = $timeDiff;
+    }
+
+    /**
+     * Returns the default number of hash rounds.
+     * @return int
+     */
+    public static function getDefaultHashRounds() {
+        return self::$defaultHashRounds;
+    }
+
+    /**
+     * Sets the default number of hash rounds to run through. Higher numbers are more secure.
+     * @param int $rounds the number of hash rounds log 2
+     */
+    public static function setDefaultHashRounds($rounds) {
+        if (!is_integer($rounds)) {
+            throw new InvalidArgumentException('$hashRounds must be an integer');
+        }
+        if ($rounds < 0) {
+            throw new InvalidArgumentException('$hashRounds must be a positive integer (including 0)');
+        }
+        self::$defaultHashRounds = $rounds;
+    }
+
+    /**
+     * @var string
+     */
     private $secret;
     /**
      * @var string
      */
-    private $hashAlgorithm = 'sha256';
+    private $hashAlgorithm;
     /**
      * @var int
      */
-    private $timeDiff = 60;
+    private $timeDiff;
     /**
      * @var int
      */
-    private $hashRounds = 10;
+    private $hashRounds;
 
     /**
      * Creates an authenticator using the given secret
@@ -45,6 +124,9 @@ class Authenticator {
         }
 
         $this->secret = $secret;
+        $this->hashAlgorithm = self::getDefaultHashAlgorithm();
+        $this->hashRounds = self::getDefaultHashRounds();
+        $this->timeDiff = self::getDefaultTimeDifference();
     }
 
     /**
