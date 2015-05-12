@@ -20,7 +20,16 @@ $isValid = $a->authenticate($date, $random, $hash);
 ```
 
 ### Setting parameters
-You can influence all used parameters by instance methods. If you want to change the secret you should create a new instance of `Authenticator`. To set the hash algorithm call `setHashAlgorithm($algo)`. Please note that the algorithm must be contained in `hash_algos()`. You can change the number of hash rounds (base 2) by calling `setHashRounds($rounds)`. To change the maximum time difference between the given DateTime and now in `authenticate` you can use `setTimeDifference($diff)`.
+Parameter | Method | Explanation
+--------- | ------ | -----------
+Hash algorithm | `setHashAlgorithm` (instance method) | Setting the hash algorithm for hash creation and validation. The algorithm must be in `hash_algos()`.
+Default hash algorithm | `setDefaultHashAlgorithm` (class method) | Setting the default hash algorithm. 
+Hash rounds | `setHashRounds` (instance method) | Setting the number of hash rounds (log 2).
+Default hash rounds | `setDefaultHashRounds` (class method) | Setting the default number of hash rounds (log 2). 
+Time difference | `setTimeDifference` (instance method) | Setting the maximum time difference between creation of the authentication hash and its validation. If the time difference is longer than this value the authentication hash will be rejected. Keep in mind that people could have slow internet connections and wrong system clocks which can influence the hash's time.
+Default time difference | `setDefaultTimeDifference` (class method) | Setting the default maximum time difference between creation of the authentication hash and its validation. See above for more information. 
+
+Please note that all `default` methods will only influence future instances of `Authenticator`. Existing ones will keep their current values.
 
 ## How does it work?
 To create your own authentication hash, you must do the following:
