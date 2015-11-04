@@ -7,6 +7,8 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+declare(strict_types=1);
+
 namespace SimpleAuth;
 /**
  * This class represents an authenticator to authenticate users
@@ -35,7 +37,7 @@ class Authenticator {
      * Gets the default hash algorithm for creation and comparison of authentication hashes.
      * @return string
      */
-    public static function getDefaultHashAlgorithm() {
+    public static function getDefaultHashAlgorithm() : string {
         return self::$defaultHashAlgorithm;
     }
 
@@ -43,10 +45,7 @@ class Authenticator {
      * Sets the default hash algorithm for creation and comparison of authentication hashes.
      * @param string $algorithm a hash algorithm from hash_algos()
      */
-    public static function setDefaultHashAlgorithm($algorithm) {
-        if (!is_string($algorithm)) {
-            throw new InvalidArgumentException('$hashAlgorithm must be a string');
-        }
+    public static function setDefaultHashAlgorithm(string $algorithm) {
         if (!in_array($algorithm, \hash_algos())) {
             throw new InvalidArgumentException('$hashAlgorithm must be a valid hash algorithm from hash_algos()');
         }
@@ -57,7 +56,7 @@ class Authenticator {
      * Returns the default time difference within an authentication hash is valid.
      * @return int
      */
-    public static function getDefaultTimeDifference() {
+    public static function getDefaultTimeDifference() : int {
         return self::$defaultTimeDiff;
     }
 
@@ -65,10 +64,7 @@ class Authenticator {
      * Sets the default maximum time difference a request may have to be authenticated
      * @param int $timeDiff maximum time difference in seconds
      */
-    public static function setDefaultTimeDifference($timeDiff) {
-        if (!is_integer($timeDiff)) {
-            throw new InvalidArgumentException('$timeDifference must be an integer');
-        }
+    public static function setDefaultTimeDifference(int $timeDiff) {
         if ($timeDiff < 0) {
             throw new InvalidArgumentException('$timeDifference must be a positive integer (including 0)');
         }
@@ -79,7 +75,7 @@ class Authenticator {
      * Returns the default number of hash rounds.
      * @return int
      */
-    public static function getDefaultHashRounds() {
+    public static function getDefaultHashRounds() : int {
         return self::$defaultHashRounds;
     }
 
@@ -87,10 +83,7 @@ class Authenticator {
      * Sets the default number of hash rounds to run through. Higher numbers are more secure.
      * @param int $rounds the number of hash rounds log 2
      */
-    public static function setDefaultHashRounds($rounds) {
-        if (!is_integer($rounds)) {
-            throw new InvalidArgumentException('$hashRounds must be an integer');
-        }
+    public static function setDefaultHashRounds(int $rounds) {
         if ($rounds < 0) {
             throw new InvalidArgumentException('$hashRounds must be a positive integer (including 0)');
         }
@@ -118,11 +111,10 @@ class Authenticator {
      * Creates an authenticator using the given secret
      * @param string $secret
      */
-    public function __construct($secret) {
-        if (!is_string($secret)) {
-            throw new InvalidArgumentException('$secret must be a string');
+    public function __construct(string $secret) {
+        if (empty($secret)) {
+            throw new InvalidArgumentException('$secret must be a non-empty string');
         }
-
         $this->secret = $secret;
         $this->hashAlgorithm = self::getDefaultHashAlgorithm();
         $this->hashRounds = self::getDefaultHashRounds();
@@ -133,10 +125,7 @@ class Authenticator {
      * Sets the hash algorithm for creation and comparison
      * @param string $hashAlgorithm a hash algorithm from hash_algos()
      */
-    public function setHashAlgorithm($hashAlgorithm) {
-        if (!is_string($hashAlgorithm)) {
-            throw new InvalidArgumentException('$hashAlgorithm must be a string');
-        }
+    public function setHashAlgorithm(string $hashAlgorithm) {
         if (!in_array($hashAlgorithm, \hash_algos())) {
             throw new InvalidArgumentException('$hashAlgorithm must be a valid hash algorithm from hash_algos()');
         }
@@ -147,10 +136,7 @@ class Authenticator {
      * Sets the maximum time difference a request may have to be authenticated
      * @param int $timeDifference maximum time difference in seconds
      */
-    public function setTimeDifference($timeDifference) {
-        if (!is_integer($timeDifference)) {
-            throw new InvalidArgumentException('$timeDifference must be an integer');
-        }
+    public function setTimeDifference(int $timeDifference) {
         if ($timeDifference < 0) {
             throw new InvalidArgumentException('$timeDifference must be a positive integer (including 0)');
         }
@@ -161,10 +147,7 @@ class Authenticator {
      * Sets the number of hash rounds to run through. Higher numbers are more secure.
      * @param int $hashRounds the number of hash rounds log 2
      */
-    public function setHashRounds($hashRounds) {
-        if (!is_integer($hashRounds)) {
-            throw new InvalidArgumentException('$hashRounds must be an integer');
-        }
+    public function setHashRounds(int $hashRounds) {
         if ($hashRounds < 0) {
             throw new InvalidArgumentException('$hashRounds must be a positive integer (including 0)');
         }
@@ -178,14 +161,7 @@ class Authenticator {
      * @param string $hash given hash
      * @return bool true if the authentication was successful, false otherwise
      */
-    public function authenticate(\DateTime $date, $random, $hash) {
-        if (!is_string($random)) {
-            throw new InvalidArgumentException('$random must be a string');
-        }
-        if (!is_string($hash)) {
-            throw new InvalidArgumentException('$hash must be a string');
-        }
-
+    public function authenticate(\DateTime $date, string $random, string $hash) {
         // setting date's time zone to UTC and setting format to ISO8601
         $date->setTimezone(new \DateTimeZone('UTC'));
         $dateString = $date->format('c');
@@ -215,10 +191,7 @@ class Authenticator {
      * @param \DateTime $date the date and time to be used, defaults to now
      * @return string the hash to send
      */
-    public function createAuthentication($random, \DateTime $date = null) {
-        if (!is_string($random)) {
-            throw new InvalidArgumentException('$random must be a string');
-        }
+    public function createAuthentication(string $random, \DateTime $date = null) {
         if (is_null($date)) { $date = new \DateTime; }
 
         // setting date's time zone to UTC and setting format to ISO8601
