@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace SimpleAuth;
 
@@ -11,52 +12,8 @@ class AuthenticatorTest extends \PHPUnit_Framework_TestCase {
      * @covers              \SimpleAuth\Authenticator\__construct
      * @expectedException   \SimpleAuth\InvalidArgumentException
      */
-    public function testCannotBeConstructedWithoutSecret() {
-        new Authenticator(null);
-    }
-
-    /**
-     * @covers              \SimpleAuth\Authenticator\__construct
-     * @expectedException   \SimpleAuth\InvalidArgumentException
-     */
-    public function testCannotBeConstructedWithInteger() {
-        new Authenticator(1);
-    }
-
-    /**
-     * @covers              \SimpleAuth\Authenticator\__construct
-     * @expectedException   \SimpleAuth\InvalidArgumentException
-     */
-    public function testAuthenticateCannotBeCalledWithoutHash() {
-        // Construct
-        $a = new Authenticator(self::TEST_SECRET);
-
-        // Test
-        $a->authenticate(new \DateTime, '', null);
-    }
-
-    /**
-     * @covers              \SimpleAuth\Authenticator\authenticate
-     * @expectedException   \SimpleAuth\InvalidArgumentException
-     */
-    public function testAuthenticateCannotBeCalledWithoutRandom() {
-        // Construct
-        $a = new Authenticator(self::TEST_SECRET);
-
-        // Test
-        $a->authenticate(new \DateTime, null, '');
-    }
-
-    /**
-     * @covers              \SimpleAuth\Authenticator\setHashAlgorithm
-     * @expectedException   \SimpleAuth\InvalidArgumentException
-     */
-    public function testHashAlgorithmCannotBeCalledWithoutHashAlgorithm() {
-        // Construct
-        $a = new Authenticator(self::TEST_SECRET);
-
-        // Test
-        $a->setHashAlgorithm(null);
+    public function testCannotBeConstructedWithEmptySecret() {
+        new Authenticator("");
     }
 
     /**
@@ -69,18 +26,6 @@ class AuthenticatorTest extends \PHPUnit_Framework_TestCase {
 
         // Test
         $a->setHashAlgorithm('test');
-    }
-
-    /**
-     * @covers              \SimpleAuth\Authenticator\createAuthentication
-     * @expectedException   \SimpleAuth\InvalidArgumentException
-     */
-    public function testCreateAuthenticationCannotBeCalledWithoutRandom() {
-        // Construct
-        $a = new Authenticator(self::TEST_SECRET);
-
-        // Test
-        $a->createAuthentication(null);
     }
 
     /**
